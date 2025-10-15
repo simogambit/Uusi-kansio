@@ -108,3 +108,23 @@ function calculate() {
   form.total.value = total.toFixed(2);
   return false;
 }
+
+function showExtraField() {
+    
+      document.getElementById("emailField").style.display = "none";
+      document.getElementById("PuhnroField").style.display = "none";
+      document.getElementById("smsField").style.display = "none";
+      document.getElementById("postimiesField").style.display = "none";
+
+      var selected = document.getElementById("contactMethod").value;
+
+      if (selected === "email") {
+        document.getElementById("emailField").style.display = "block";
+      } else if (selected === "Puhnro") {
+        document.getElementById("PuhnroField").style.display = "block";
+      } else if (selected === "sms") {
+        document.getElementById("smsField").style.display = "block";
+      } else if (selected === "postimies pate") {
+        document.getElementById("postimiesField").style.display = "block";
+      }
+    }
