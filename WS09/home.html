@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Magazine Template</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+
+<div id="wrapper">
+    <div id="branding">
+        <h1 class="logo"><a href="#" title="< Magazine />">< Magazine /></a></h1>
+        <ul class="topNav">
+            <li><a href="#" class="topNavAct">REPORTING & ESSAYS</a></li>
+            <li><a href="#">ARTS & CULTURE</a></li>
+            <li><a href="#">HUMOR</a></li>
+            <li><a href="#">FICTION & POETRY</a></li>
+            <li><a href="#">THE TALK OF THE TOWN</a></li>
+            <li><a href="#">ONLINE ONLY</a></li>
+            <li><a href="#">SUBSCRIBE</a></li>
+            <li><a href="#">ABOUT US</a></li>
+            <li><a href="#">ARCHIVE</a></li>
+            <li><a href="#" class="topNavLast">VIEDO</a></li>
+        </ul>
+        <br class="clear" />
+    </div>
+
+    <div id="contant">
+        <div class="contant_1">
+            <div class="contant_1_left">
+                <h2>
+                    What is Lorem Ipsum?
+                    <span>September 1, 2009 | (0) Comments</span>
+                </h2>
+                <img src="images/c1_i1.png" width="277" height="266" alt="" />
+                <h3>What We Speak.</h3>
+                <br class="clear bottomClear" />
+                <p>Lorem Ipsum is simply dummy text...</p>
+
+                <p class="quoteBar" id="quotebar">If you are going to use a passage...</p>
+                <p>It uses a dictionary of over...</p>
+            </div>
+
+            <div class="sideBar">
+                <div class="sideBarListBox">
+                    <img src="images/sideBarListBoxTop.png" alt="" width="240" height="10" />
+                    <ul>
+                        <li><a href="#">What is Lorem Ipsum?</a></li>
+                        <li><a href="#">Why Do We Use It?</a></li>
+                        <li><a href="#">Where Does It Come From?</a></li>
+                        <li><a href="#">Where Can I Get Some?</a></li>
+                        <li><a href="#">Variations of Lorem Ipsum</a></li>
+                    </ul>
+                    <img src="images/sideBarListBoxBottom.png" alt="" width="240" height="10" />
+                </div>
+            </div>
+
+            <br class="clear" />
+        </div>
+    </div>
+
+    <div style="padding:20px; border:1px solid #ccc; margin:20px; background:#f8f8f8;">
+        <h3>Exercise 3: Effects and animation</h3>
+        <p>
+            <input type="button" id="button" value="Fade in H1">
+            <input type="button" id="button2" value="Fade out H1">
+            <input type="button" id="button3" value="SlideUp main contents">
+            <input type="button" id="button4" value="SlideDown main contents">
+            <input type="button" id="button5" value="Animate Image">
+        </p>
+    </div>
+
+    <div style="padding:20px; border:1px solid #ccc; margin:20px; background:#f8f8f8;">
+        <h3>News Loader (AJAX)</h3>
+
+        <select id="newsSelect" style="padding:5px;">
+            <option value="">-- Select feed --</option>
+            <option value="iltalehti">Iltalehti Uutiset RSS</option>
+        </select>
+
+        <div id="ajaxTarget"
+            style="margin-top:20px; padding:15px; border:1px solid #999; background:white;">
+            Select something to load content...
+        </div>
+    </div>
+
+    <div id="footer">
+        <p>Footer content…</p>
+    </div>
+</div>
+
+<div id="footerContainer">
+    <p>
+        <label>Designed by <a href="http://vectorart.org">VectorArt</a></label>
+        <span>Copyright 2009 Lorem Ipsum. All Rights Reserved</span>
+    </p>
+</div>
+
+<script>
+$(document).ready(function () {
+
+    // AJAX 
+
+
+    const feeds = {
+        iltalehti: "https://www.iltalehti.fi/rss/uutiset.xml"
+    };
+
+    $("#newsSelect").on("change", function () {
+
+        const selectedFeed = $(this).val();
+
+        if (!selectedFeed) {
+            $("#ajaxTarget").html("Select something to load content...");
+            return;
+        }
+
+        $("#ajaxTarget").html("Loading...");
+
+        $.ajax({
+            url: feeds[selectedFeed],
+            dataType: "xml",
+            success: function (xml) {
+
+                let html = "<h3>Uutisotsikot</h3><ul>";
+
+                $(xml).find("item").each(function () {
+                    const title = $(this).find("title").text();
+                    html += "<li>" + title + "</li>";
+                });
+
+                html += "</ul>";
+
+                $("#ajaxTarget").html(html);
+            },
+            error: function (xhr) {
+                $("#ajaxTarget").html(
+                    "Error loading feed.<br>Status: " +
+                    xhr.status + " " + xhr.statusText
+                );
+            }
+        });
+    });
+
+    // efektit
+
+    const $h1 = $('.logo');
+    $h1.hide().css('display', 'none');
+
+    $('#button').on('click', function () {
+        if ($h1.is(':hidden')) $h1.fadeIn(1000);
+    });
+
+    $('#button2').on('click', function () {
+        if ($h1.is(':visible')) $h1.fadeOut(1000);
+    });
+
+    $('#button3').on('click', function () {
+        $('#contant').slideUp(800);
+    });
+
+    $('#button4').on('click', function () {
+        $('#contant').slideDown(800);
+    });
+
+    $('#button5').on('click', function () {
+        const $image = $('.contant_1_left img:first');
+        
+        $image.animate({
+            opacity: 0.3,
+            marginLeft: '150px',
+            width: '100px',
+            height: '100px'
+        }, 1000, function () {
+            $image.animate({
+                opacity: 1,
+                marginLeft: '0px',
+                width: '277px',
+                height: '266px'
+            }, 1000);
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>
